@@ -7,21 +7,21 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 
 trait ApiResponser
 {
-    private function successResponse($data, $code)
+    protected function successResponse($message, $code)
     {
-        return response()->json($data, $code);
+        return response()->json(['message' => $message, 'status_code' => $code], $code);
     }
     protected function errorResponse($message, $code)
     {
-        return response()->json(['message' => $message,'status_code' => $code], $code);
+        return response()->json(['message' => $message, 'status_code' => $code], $code);
     }
     protected function showAll(ResourceCollection $coleccion, $code = 200)
     {
-        return $this->successResponse($coleccion, $code);
+        return response()->json($coleccion, $code);
     }
 
     protected function showOne(JsonResource $modelo, $code = 200)
     {
-        return $this->successResponse($modelo, $code);
+        return response()->json($modelo, $code);
     }
 }

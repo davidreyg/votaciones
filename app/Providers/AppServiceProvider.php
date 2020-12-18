@@ -3,14 +3,14 @@
 namespace App\Providers;
 
 use App\Models\User;
-use App\Models\Product;
-use App\Models\BillDetail;
-use App\Models\Ingredient;
-use App\Observers\ProductObserver;
-use App\Observers\BillDetailObserver;
-use App\Observers\IngredientObserver;
 use Illuminate\Support\ServiceProvider;
 use App\Console\Commands\ModelMakeCommand;
+use App\Models\ElectionGroup;
+use App\Models\Employee;
+use App\Models\EmployeeGroup;
+use App\Observers\ElectionGroupObserver;
+use App\Observers\EmployeeGroupObserver;
+use App\Observers\EmployeeObserver;
 use App\Observers\UserObserver;
 
 class AppServiceProvider extends ServiceProvider
@@ -32,6 +32,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         User::observe(UserObserver::class);
+        Employee::observe(EmployeeObserver::class);
+        EmployeeGroup::observe(EmployeeGroupObserver::class);
+        ElectionGroup::observe(ElectionGroupObserver::class);
         if ($this->app->environment() !== 'production') {
             $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
         }

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Resources\User;
+namespace App\Http\Resources\EmployeeGroup;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserResource extends JsonResource
+class EmployeeGroupResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,16 +16,13 @@ class UserResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'username' => $this->username,
+            'charge' => $this->charge,
             'employee' => $this->employee,
-            'status' => $this->status,
-            // 'company_id' => $this->company_id,
-            // 'avatar' => $this->getAvatarAttribute(),
-            // 'status' => $this->status,
+            'group' => $this->group,
             // 'links' => [
             //     [
             //         'rel' => 'self',
-            //         'href' => route('api.users.show', $this->id)
+            //         'href' => route('api.employees.show', $this->id)
             //     ]
             // ]
         ];

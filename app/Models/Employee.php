@@ -48,9 +48,10 @@ class Employee extends Model
 
     public $fillable = [
         'name',
-        'alias',
-        'phone',
-        'status'
+        'father_last_name',
+        'mother_last_name',
+        'condition',
+        'dni'
     ];
 
     /**
@@ -61,9 +62,9 @@ class Employee extends Model
     protected $casts = [
         'id'    => 'integer',
         'name'  => 'string',
-        'alias' => 'string',
-        'phone' => 'integer',
-        'status' => 'string',
+        'father_last_name' => 'string',
+        'mother_last_name' => 'integer',
+        'condition' => 'string',
     ];
 
     /**
@@ -73,13 +74,18 @@ class Employee extends Model
      */
     public static $rules = [
         'name'  => 'required|size:50',
-        'alias' => 'string|size:20',
-        'phone' => 'numeric|max:999999999',
-        'status' => 'string|size:1'
+        'father_last_name' => 'string|size:20',
+        'mother_last_name' => 'numeric|max:999999999',
+        'condition' => 'string|size:1'
     ];
 
     public function user()
     {
         return $this->hasOne(User::class);
+    }
+
+    public function employee_groups()
+    {
+        return $this->hasMany(EmployeeGroup::class);
     }
 }

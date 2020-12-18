@@ -17,7 +17,8 @@ class UserPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->can('users.view');
+        // return $user->can('users.view');
+        return $user->hasRole(['admin']);
     }
 
     /**
@@ -29,17 +30,18 @@ class UserPolicy
      */
     public function view(User $user, User $model)
     {
-        $permissionViewOwnUser = 'users.view.' . $model->id;
-        if ($user->can($permissionViewOwnUser)) {
-            return true;
-        }
+        // $permissionViewOwnUser = 'users.view.' . $model->id;
+        // if ($user->can($permissionViewOwnUser)) {
+        //     return true;
+        // }
 
-        if ($user->can('users.view.*')) {
-            return true;
-        }
+        // if ($user->can('users.view.*')) {
+        //     return true;
+        // }
 
 
-        return $user->id === $model->id;
+        // return $user->id === $model->id;
+        return $user->hasRole(['admin']);
     }
 
     /**
@@ -50,7 +52,8 @@ class UserPolicy
      */
     public function create(User $user)
     {
-        return $user->can('users.create');
+        // return $user->can('users.create');
+        return $user->hasRole(['admin']);
     }
 
     /**
@@ -62,16 +65,17 @@ class UserPolicy
      */
     public function update(User $user, User $model)
     {
-        $permissionUpdate = 'users.update.' . $model->id;
-        if ($user->can($permissionUpdate)) {
-            return true;
-        }
+        // $permissionUpdate = 'users.update.' . $model->id;
+        // if ($user->can($permissionUpdate)) {
+        //     return true;
+        // }
 
-        if ($user->can('users.update.*')) {
-            return true;
-        }
-        // return $user->can($permissionUpdate);
-        return $user->id === $model->id;
+        // if ($user->can('users.update.*')) {
+        //     return true;
+        // }
+        // // return $user->can($permissionUpdate);
+        // return $user->id === $model->id;
+        return $user->hasRole(['admin']);
     }
 
     /**
@@ -83,7 +87,8 @@ class UserPolicy
      */
     public function delete(User $user, User $model)
     {
-        return $user->can('users.delete');
+        // return $user->can('users.delete');
+        return $user->hasRole(['admin']);
     }
 
     /**
@@ -95,7 +100,8 @@ class UserPolicy
      */
     public function restore(User $user, User $model)
     {
-        return $user->can('users.restore');
+        // return $user->can('users.restore');
+        return $user->hasRole(['admin']);
     }
 
     /**
@@ -107,6 +113,7 @@ class UserPolicy
      */
     public function forceDelete(User $user, User $model)
     {
-        return $user->can('users.force_delete');
+        // return $user->can('users.force_delete');
+        return $user->hasRole(['admin']);
     }
 }

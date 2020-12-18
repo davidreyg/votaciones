@@ -1,38 +1,38 @@
 <?php
 
-namespace App\Http\Controllers\Api;
 
-use App\Models\Employee;
-use Illuminate\Http\Request;
+namespace App\Http\Controllers\Api\User;
+
+use App\Models\User;
+use App\Http\Requests\UserRequest;
+use App\Http\Repositories\UserRepository;
+use App\Http\Resources\User\UserResource;
 use App\Http\Controllers\AppBaseController;
-use App\Http\Repositories\EmployeeRepository;
-use App\Http\Requests\EmployeeRequest;
-use App\Http\Resources\Employee\EmployeeResource;
-use App\Http\Resources\Employee\EmployeeCollection;
+use App\Http\Resources\User\UserCollection;
 
-class EmployeeController extends AppBaseController
+class UserController extends AppBaseController
 {
-    /** @var  EmployeeRepository */
-    private $employeeRepository;
+    /** @var  userRepository */
+    private $userRepository;
 
-    public function __construct(EmployeeRepository $employeeRepo)
+    public function __construct(UserRepository $userRepo)
     {
-        $this->employeeRepository = $employeeRepo;
+        $this->userRepository = $userRepo;
         // TODO: Importante: esta es la policy que nos ayuda a determinar las acciones que puede hacer un usario.
-        $this->authorizeResource(Employee::class, 'employee');
+        $this->authorizeResource(User::class, 'user');
     }
     /**
      * @OA\Get(
-     *     path="/employees",
-     *     summary="Mostrar Empleados",
-     *     tags={"employees"},
+     *     path="/users",
+     *     summary="Mostrar Usuarios del sistema",
+     *     tags={"users"},
      *     @OA\Response(
      *         response="401",
      *         description="Inserta tu token pues hermano!",
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Lista de Empleados. Correcto",
+     *         description="Lista de Usuarios del sistema. Correcto",
      *     ),
      *     security={
      *         {"bearer": {}}
@@ -41,22 +41,24 @@ class EmployeeController extends AppBaseController
      */
     public function index()
     {
-        $employees = $this->employeeRepository->all();
-        // return Employee::paginate(50);
+        $users = $this->userRepository->all();
+        // User::with()
+        // var_dump(User::with('company', 'employee')->get());
 
-        return $this->showAll(new EmployeeCollection($employees));
+        return $this->showAll(new UserCollection($users));
     }
+
 
     /**
      * @OA\Post(
-     *     path="/employees",
-     *     tags={"employees"},
+     *     path="/users",
+     *     tags={"users"},
      *     operationId="store",
-     *     summary="Agregar un nuevo Empleado.",
+     *     summary="Agregar un nuevo usuario.",
      *     @OA\RequestBody(
-     *         description="Empleado a ser creado",
+     *         description="usuario a ser creado",
      *         required=true,
-     *         @OA\JsonContent(ref="#/components/schemas/Employee")
+     *         @OA\JsonContent(ref="#/components/schemas/User")
      *     ),
      *     @OA\Response(
      *         response=401,
@@ -71,25 +73,25 @@ class EmployeeController extends AppBaseController
      *     }
      * )
      */
-    public function store(EmployeeRequest $request)
+    public function store(UserRequest $request)
     {
         $campos = $request->validated();
-        $employee = $this->employeeRepository->create($campos);
+        $user = $this->userRepository->create($campos);
 
-        return $this->showOne(new EmployeeResource($employee), 201);
+        return $this->showOne(new UserResource($user), 201);
     }
 
     /**
      * @OA\Get(
-     *     path="/employees/{employeeId}",
-     *     summary="Buscar Empleado por ID",
-     *     description="Retorna un Empleado",
+     *     path="/users/{userID}",
+     *     summary="Buscar usuarios por ID",
+     *     description="Retorna un usuarios",
      *     operationId="show",
-     *     tags={"employees"},
+     *     tags={"users"},
      *     @OA\Parameter(
-     *         description="ID del Empleado a retornar",
+     *         description="ID del usuarios a retornar",
      *         in="path",
-     *         name="employeeId",
+     *         name="userID",
      *         required=true,
      *         @OA\Schema(
      *           type="integer",
@@ -99,7 +101,7 @@ class EmployeeController extends AppBaseController
      *     @OA\Response(
      *         response=200,
      *         description="successful operation",
-     *         @OA\JsonContent(ref="#/components/schemas/Employee")
+     *         @OA\JsonContent(ref="#/components/schemas/User")
      *     ),
      *     @OA\Response(
      *         response=401,
@@ -107,34 +109,34 @@ class EmployeeController extends AppBaseController
      *     ),
      *     @OA\Response(
      *         response="404",
-     *         description="Empleado no existe"
+     *         description="usuarios no existe"
      *     ),
      *     security={
      *       {"bearer": {}}
      *     }
      * )
      */
-    public function show(Employee $employee)
+    public function show(User $user)
     {
-        return $this->showOne(new EmployeeResource($employee), 200);
+        return $this->showOne(new UserResource($user), 200);
     }
 
     /**
      * @OA\Put(
-     *     path="/employees/{employeeId}",
-     *     tags={"employees"},
+     *     path="/users/{userID}",
+     *     tags={"users"},
      *     operationId="update",
-     *     summary="Actualizar un Empleado existente",
+     *     summary="Actualizar una Usuario de productos existente",
      *     description="",
      *     @OA\RequestBody(
      *         required=true,
-     *         description="Empleado a ser actualizada",
-     *         @OA\JsonContent(ref="#/components/schemas/Employee")
+     *         description="Usuario de productos a ser actualizada",
+     *         @OA\JsonContent(ref="#/components/schemas/User")
      *     ),
      *     @OA\Parameter(
-     *         description="ID del Empleado a actualizar",
+     *         description="ID del Usuario de productos a actualizar",
      *         in="path",
-     *         name="employeeId",
+     *         name="userID",
      *         required=true,
      *         @OA\Schema(
      *           type="integer",
@@ -143,7 +145,7 @@ class EmployeeController extends AppBaseController
      *     ),
      *     @OA\Response(
      *         response=404,
-     *         description="Empleado no encontrada",
+     *         description="Usuario de productos no encontrado",
      *     ),
      *     @OA\Response(
      *         response=401,
@@ -151,33 +153,33 @@ class EmployeeController extends AppBaseController
      *     ),
      *     @OA\Response(
      *         response="200",
-     *         description="Empleado actualizada correctamente"
+     *         description="Usuario de productos actualizado correctamente"
      *     ),
      *     security={
      *       {"bearer": {}}
      *     }
      * )
      */
-    public function update(EmployeeRequest $request, Employee $employee)
+    public function update(UserRequest $request, User $user)
     {
         $campos = $request->validated();
 
-        $employee = $this->employeeRepository->update($campos, $employee);
+        $user = $this->userRepository->update($campos, $user);
 
-        return $this->showOne(new EmployeeResource($employee), 200);
+        return $this->showOne(new UserResource($user), 200);
     }
 
     /**
      * @OA\Delete(
-     *     path="/employees/{employeeId}",
-     *     summary="Elimina un Empleado",
+     *     path="/users/{userID}",
+     *     summary="Elimina un Usuario de productos",
      *     description="",
      *     operationId="delete",
-     *     tags={"employees"},
+     *     tags={"users"},
      *     @OA\Parameter(
-     *         description="Id del Empleado a eliminar",
+     *         description="Id del Usuario de productos a eliminar",
      *         in="path",
-     *         name="employeeId",
+     *         name="userID",
      *         required=true,
      *         @OA\Schema(
      *             type="integer",
@@ -186,7 +188,7 @@ class EmployeeController extends AppBaseController
      *     ),
      *     @OA\Response(
      *         response=404,
-     *         description="Empleado no encontrado",
+     *         description="Usuario de productos no encontrado",
      *     ),
      *     @OA\Response(
      *         response=401,
@@ -194,16 +196,16 @@ class EmployeeController extends AppBaseController
      *     ),
      *     @OA\Response(
      *         response="200",
-     *         description="Empleado eliminado correctamente"
+     *         description="Usuario de productos eliminado correctamente"
      *     ),
      *     security={
      *       {"bearer": {}}
      *     }
      * )
      */
-    public function destroy(Employee $employee)
+    public function destroy(User $user)
     {
-        $employee->delete();
-        return $this->showOne(new EmployeeResource($employee), 200);
+        $user->delete();
+        return $this->showOne(new UserResource($user), 200);
     }
 }

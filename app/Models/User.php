@@ -75,10 +75,8 @@ class User extends Authenticatable implements HasMedia, JWTSubject
      */
     protected $fillable = [
         'username',
-        'email',
         'password',
         'employee_id',
-        'company_id',
     ];
 
     // protected $appends = [
@@ -101,11 +99,9 @@ class User extends Authenticatable implements HasMedia, JWTSubject
      * @var array
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
-        'email' => 'string',
+        'username' => 'string',
         'password' => 'string',
         'employee_id' => 'integer',
-        'company_id' => 'integer',
     ];
 
     /**
@@ -115,9 +111,6 @@ class User extends Authenticatable implements HasMedia, JWTSubject
      */
     public static $rules = [
         'username'  => 'required|string',
-        'email' => 'required|string|email',
-        // 'password' => 'nullable|string',
-        'company_id' => 'required|exists:companies,id',
         'employee_id' => 'required|exists:employees,id',
     ];
 
@@ -141,25 +134,12 @@ class User extends Authenticatable implements HasMedia, JWTSubject
         return [];
     }
 
-    public function getFormattedCreatedAtAttribute()
-    {
-        $dateFormat = CompanySetting::getSetting('carbon_date_format', $this->company_id);
-        return Carbon::parse($this->created_at)->format($dateFormat);
-    }
+    // public function getFormattedCreatedAtAttribute()
+    // {
+    //     $dateFormat = CompanySetting::getSetting('carbon_date_format', $this->company_id);
+    //     return Carbon::parse($this->created_at)->format($dateFormat);
+    // }
 
-    public function getAvatarAttribute()
-    {
-        $avatar = $this->getMedia('admin_avatar')->first();
-        if ($avatar) {
-            return  asset($avatar->getUrl());
-        }
-        return;
-    }
-
-    public function company()
-    {
-        return $this->belongsTo(Company::class);
-    }
 
     public function employee()
     {

@@ -2,7 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\Employee;
+use App\Models\Group;
 use App\Models\User;
+use App\Policies\EmployeePolicy;
+use App\Policies\GroupPolicy;
 use App\Policies\UserPolicy;
 use Gate;
 use Laravel\Passport\Passport;
@@ -18,6 +22,8 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         'App\Model' => 'App\Policies\ModelPolicy',
         User::class => UserPolicy::class,
+        Employee::class => EmployeePolicy::class,
+        Group::class => GroupPolicy::class,
     ];
 
     /**
