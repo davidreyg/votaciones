@@ -28,6 +28,7 @@ module.exports = function (ctx) {
       'filePond',
       'vueAuth',
       'sweetAlert2',
+      'mixin',
     ],
 
     sourceFiles: {
@@ -75,11 +76,11 @@ module.exports = function (ctx) {
       env: ctx.dev
         ? {
           // so on dev we'll have
-          BASE_API_URL: JSON.stringify('http://localhost:8000/api')
+          BASE_API_URL: JSON.stringify('http://votaciones.dev.com')
         }
         : {
           // and on build (production):
-          BASE_API_URL: JSON.stringify('http://veneciaperuana.dev.com/api')
+          BASE_API_URL: JSON.stringify('http://votaciones.dev.com')
         },
       // Options below are automatically set depending on the env, set them if you want to override
       // extractCSS: false,
@@ -128,7 +129,7 @@ module.exports = function (ctx) {
       directives: [],
 
       // Quasar plugins
-      plugins: ['Notify']
+      plugins: ['Notify', 'Loading']
     },
 
     // animations: 'all', // --- includes all animations
