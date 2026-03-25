@@ -43,7 +43,7 @@
 		}
 	},
 	"remoteUser": "sail",
-	"postCreateCommand": "chown -R 1000:1000 /var/www/html 2>/dev/null || true",
+	"postCreateCommand": "git config --local include.path ../.gitconfig && chown -R 1000:1000 /var/www/html 2>/dev/null || true",
 	"mounts": [
 		"source=${localEnv:HOME}/.ssh,target=/home/sail/.ssh,type=bind,consistency=cached"
 	],

@@ -1,0 +1,8 @@
+[user]
+        email = neisserrey@upeu.edu.pe
+        name = David Rey
+        signingKey = neisserrey@upeu.edu.pe
+# [commit]
+#         gpgsign = true
+# [gpg]
+#         format = openpgp
