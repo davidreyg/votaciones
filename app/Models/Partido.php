@@ -6,6 +6,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
@@ -21,4 +22,9 @@ final class Partido extends Model implements HasMedia
         'siglas',
         'eslogan',
     ];
+
+    public function candidatos(): HasMany
+    {
+        return $this->hasMany(Candidato::class);
+    }
 }
