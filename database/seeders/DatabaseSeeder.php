@@ -18,6 +18,8 @@ final class DatabaseSeeder extends Seeder
 
         $this->call([
             PartidoSeeder::class,
+            EmpleadoSeeder::class,
+            CandidatoSeeder::class,
         ]);
     }
 }
